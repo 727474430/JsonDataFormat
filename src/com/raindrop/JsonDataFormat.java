@@ -5,8 +5,6 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.SelectionModel;
-import com.intellij.openapi.project.Project;
-import org.apache.commons.lang.StringUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,23 +12,22 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 
 /**
- *
- * @author wl
- * @date 2017/10/24
+ * @name: com.raindrop.JsonDataFormat.java
+ * @description:
+ * @author: Wang Liang
+ * @create Time: 2019/5/7 9:43
  */
 public class JsonDataFormat extends AnAction {
 
     @Override
     public void actionPerformed(AnActionEvent e) {
-        // project
-        final Project project = e.getData(PlatformDataKeys.PROJECT);
         // 得到Editor
         final Editor editor = e.getData(PlatformDataKeys.EDITOR);
         // 获取SelectModel
         SelectionModel selectionModel = editor.getSelectionModel();
         // 得到用户选择的内容
         String selectedText = selectionModel.getSelectedText();
-        if (StringUtils.isNotBlank(selectedText)) {
+        if (selectedText != null && !"".equals(selectedText.trim())) {
             // 格式化后的内容
             String value = JsonUtil.jsonFormat(selectedText);
             // 得到系统剪贴板
@@ -41,6 +38,11 @@ public class JsonDataFormat extends AnAction {
         }
     }
 
+    /**
+     * Show dialog frame
+     *
+     * @param value
+     */
     private void showJsonDialog(String value) {
         JFrame frame = new JFrame("JsonDialog");
         frame.setContentPane(new JsonDialog(value).getContentPane());
